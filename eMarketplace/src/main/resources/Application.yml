@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Marketplace
+    username: postgres
+    password: brb123/xd/brb431
+  jpa:
+    generate-ddl: false
+    show-sql: false
