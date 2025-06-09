@@ -5,6 +5,8 @@ import com.example.eMarketplace.model.Post;
 import com.example.eMarketplace.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.SpringCacheAnnotationParser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+
+import org.springframework.data.domain.Pageable;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -37,8 +41,9 @@ public class MarketController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAll(){
-        return ResponseEntity.ok(postService.getAll());
+    public ResponseEntity<Page<Post>> getAll(Pageable pageable) {
+        Page<Post> page = postService.getAllByTimeDesc(pageable);
+        return ResponseEntity.ok(page);
     }
 
 

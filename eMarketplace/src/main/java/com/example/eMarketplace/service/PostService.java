@@ -3,8 +3,10 @@ package com.example.eMarketplace.service;
 import com.example.eMarketplace.model.Post;
 import com.example.eMarketplace.repository.PostRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,8 +18,8 @@ public class PostService {
         return repository.findAll();
     }
 
-    public List<Post> getAllByTimeDesc(){
-        return repository.findAllByOrderBySubmissionTimeDesc();
+    public Page<Post> getAllByTimeDesc(Pageable pageable){
+        return repository.findAllByOrderBySubmissionTimeDesc(pageable);
     }
 
     public Post getModel(String id){

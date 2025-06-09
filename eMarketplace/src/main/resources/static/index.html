@@ -10,7 +10,7 @@
 <div class="headers">
     <h1 style="display: inline-block; margin-right: 20px">eMarketplace</h1>
     <button
-            onclick="switchPage('./new-item.html')"
+            onclick="switchToPage('./new-item.html')"
             style="display: inline-block"
     >
         New
@@ -23,9 +23,13 @@
 <br />
 
 <div class="pageButtons">
-    <button style="display: inline-block">&lt;</button>
+    <button style="display: inline-block" onclick="switchPage(-1) ">
+        &lt;
+    </button>
     <p style="display: inline-block">1</p>
-    <button style="display: inline-block">&gt;</button>
+    <button style="display: inline-block" onclick="switchPage(1)">
+        &gt;
+    </button>
 </div>
 </body>
 
