@@ -1,13 +1,13 @@
 package com.example.eMarketplace.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "post")
@@ -28,8 +28,13 @@ public class Post {
     private String description;
 
     @Column(name = "submission_time")
-    private Date submissionTime;
+    private Timestamp submissionTime;
 
     @Column(name = "photo_url")
     private String photoUrl;
+
+    @OneToOne
+    @JoinColumn(name = "user_Id", referencedColumnName = "id")
+    private User user;
+
 }

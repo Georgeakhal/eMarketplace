@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="./user.js" defer></script>
+    <title>Register</title>
+    <style>
+        body {
+          margin: 0;
+          font-family: 'Georgia', serif;
+          background-color: #f5f5f5;
+        }
+
+        header {
+          background-color: #8378f9;
+          padding: 15px;
+          color: white;
+          font-weight: bold;
+          font-size: 1.5rem;
+          font-family: 'Trebuchet MS', sans-serif;
+        }
+
+        .container {
+          max-width: 400px;
+          margin: 50px auto;
+          background-color: white;
+          padding: 40px;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          text-align: center;
+        }
+
+        h2 {
+          margin-bottom: 30px;
+          font-size: 1.7rem;
+        }
+
+        form {
+          display: flex;
+          flex-direction: column;
+        }
+
+        label {
+          text-align: left;
+          margin: 10px 0 5px 5px;
+          font-weight: 500;
+        }
+
+        input {
+          padding: 8px 10px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          font-size: 1rem;
+        }
+
+        button {
+          margin-top: 25px;
+          background-color: #8378f9;
+          color: white;
+          padding: 10px;
+          border: none;
+          border-radius: 6px;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #6f66e0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    &nbsp; eMarketplace
+</header>
+
+<div class="container">
+    <h2>Register</h2>
+    <form id="userReg">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Username" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Email" required />
+
+        <label for="birthday">Date of Birth</label>
+        <input type="date" id="birthday" name="birthday" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required />
+
+        <label for="confirm">Confirm Password</label>
+        <input type="password" id="confirm" name="confirm" placeholder="Confirm Password" required />
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+</body>
+</html>

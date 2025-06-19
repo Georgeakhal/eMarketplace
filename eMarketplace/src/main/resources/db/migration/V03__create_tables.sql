@@ -1,0 +1,3 @@
+ALTER TABLE post
+ALTER COLUMN submission_time TYPE TIMESTAMP;
+

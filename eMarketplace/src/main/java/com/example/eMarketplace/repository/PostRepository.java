@@ -11,5 +11,8 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> findAllByOrderBySubmissionTimeDesc(Pageable pageable);
+    Page<Post> findAllByOrderBySubmissionTimeAsc(Pageable pageable);
+    Page<Post> findAllByOrderByPriceAsc(Pageable pageable);
+    Page<Post> findAllByOrderByPriceDesc(Pageable pageable);
 
 }

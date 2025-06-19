@@ -1,0 +1,1 @@
+ALTER TABLE post RENAME COLUMN "userId" TO user_id;

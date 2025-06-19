@@ -8,3 +8,6 @@ spring:
   jpa:
     generate-ddl: false
     show-sql: false
+  jjwt:
+    duration: 300000
+    secret: 3a0d6741-5156-4711-8c40-dc7537b0f85e

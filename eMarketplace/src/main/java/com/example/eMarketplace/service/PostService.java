@@ -21,6 +21,16 @@ public class PostService {
     public Page<Post> getAllByTimeDesc(Pageable pageable){
         return repository.findAllByOrderBySubmissionTimeDesc(pageable);
     }
+    public Page<Post> getAllByTimeAsc(Pageable pageable){
+        return repository.findAllByOrderBySubmissionTimeAsc(pageable);
+    }
+    public Page<Post> getAllByPriceDesc(Pageable pageable){
+        return repository.findAllByOrderByPriceDesc(pageable);
+    }
+    public Page<Post> getAllByPriceAsc(Pageable pageable){
+        return repository.findAllByOrderByPriceAsc(pageable);
+    }
+
 
     public Post getModel(String id){
         return repository.findById(id)

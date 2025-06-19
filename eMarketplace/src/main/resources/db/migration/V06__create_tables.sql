@@ -1,0 +1,8 @@
+ALTER TABLE IF EXISTS public.post
+    ADD COLUMN "userId" uuid;
+ALTER TABLE IF EXISTS public.post
+    ADD CONSTRAINT "userKey" FOREIGN KEY ("userId")
+    REFERENCES public.users (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;

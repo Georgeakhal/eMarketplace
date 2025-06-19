@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Getter
@@ -15,4 +16,5 @@ public class PostDto {
     private int price;
     private String description;
     private String photoUrl;
+    private UUID userId;
 }

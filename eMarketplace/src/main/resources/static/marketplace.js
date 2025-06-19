@@ -1,12 +1,49 @@
+const token = localStorage.getItem("token");
+const userString = localStorage.getItem("user");
+
+const headDiv = document.getElementsByClassName("headers")[0];
+
+// --1
+
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const userString = localStorage.getItem("user");
+
+  if (token && userString) {
+    const user = JSON.parse(userString);
+
+    const usernameSpan = document.querySelector(".username");
+    if (usernameSpan) {
+      usernameSpan.textContent = user.username;
+    }
+
+    const userInfoDiv = document.querySelector(".user-info");
+    if (userInfoDiv) {
+      const button = document.createElement("button");
+      button.textContent = "My Item";
+      button.onclick = () => switchToPage("./newItem.html");
+      button.style.display = "inline-block";
+      userInfoDiv.insertBefore(button, userInfoDiv.querySelector("button"));
+    }
+  }
+});
+
+
+// --2
 let totalPages = 0;
 const size = 6;
-const div = document.querySelector(".posts");
+const postdiv = document.querySelector(".posts");
 const pageNumEl = document.querySelector(".pageButtons p");
+
+let selectedItem = "dateDesc";
+const selectSort = document.getElementById("sort");
 
 fetchAndRenderPage(0);
 
 function fetchAndRenderPage(pageIndex) {
-  const url = `http://localhost:8080/product?page=${pageIndex}&size=${size}`;
+  const url = `http://localhost:8080/product?page=${pageIndex}&size=${size}&sort=${encodeURIComponent(
+    selectedItem
+  )}`;
 
   fetch(url)
     .then((res) => {
@@ -22,39 +59,50 @@ function fetchAndRenderPage(pageIndex) {
       console.log("Parsed products to render:", data);
 
       if (pageNumEl) pageNumEl.textContent = pageIndex + 1;
-      if (!div) return;
+      if (!postdiv) return;
 
-      div.innerHTML = "";
+      postdiv.innerHTML = "";
 
       if (Array.isArray(data)) {
+        postdiv.innerHTML = "";
+
         data.forEach((product) => {
-          const iPrice = document.createElement("p");
-          iPrice.textContent = `Price: ${product.price}`;
-          div.appendChild(iPrice);
+          const div = document.createElement("div");
+          div.className = "post";
 
           if (product.photoUrl) {
             const img = document.createElement("img");
             img.src = product.photoUrl;
-            img.alt = product.name || "Image";
-            img.width = 300;
+            img.alt = product.name || "Product image";
             div.appendChild(img);
           }
 
-          const iName = document.createElement("a");
+          const iName = document.createElement("h3");
           iName.textContent = product.name;
-          iName.href = "#";
+          iName.style.cursor = "pointer";
           iName.onclick = () => {
             detailedPostPage(
               product.name,
               product.description,
               product.photoUrl,
-              product.price
+              product.price,
+              product.date,
+              product.user.username
             );
           };
           div.appendChild(iName);
+
+          const iPrice = document.createElement("p");
+          iPrice.textContent = `${product.price}$`;
+          div.appendChild(iPrice);
+
+          postdiv.appendChild(div);
         });
       } else {
-        console.warn("Data is not an array", data);
+        console.warn("Product data missing or invalid:", data);
+        const msg = document.createElement("div");
+        msg.innerHTML = "<p>No products available.</p>";
+        postdiv.appendChild(msg);
       }
     })
     .catch((error) => {
@@ -62,81 +110,9 @@ function fetchAndRenderPage(pageIndex) {
     });
 }
 
-
-const form = document.querySelector(".submitPost");
-
-if (form) {
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const fname = form.querySelector('[name="name"]').value;
-    const fprice = form.querySelector('[name="price"]').value;
-    const fdescription = form.querySelector('[name="description"]').value;
-    const imgInput = form.querySelector('[name="img"]');
-    const file = imgInput.files[0];
-
-    if (!file) {
-      alert("Image is required.");
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-      const base64Image = event.target.result;
-
-      const jsonData = {
-        name: fname,
-        price: fprice,
-        description: fdescription,
-        photoUrl: base64Image,
-      };
-
-      submitProduct(jsonData);
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
-
-
-function submitProduct(jsonData) {
-  fetch("http://localhost:8080/product", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(jsonData),
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      console.log("Success:", json);
-      window.location.href = "./index.html";
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-function switchToPage(url) {
-  window.location.href = url;
-}
-
-function detailedPostPage(name, description, photoUrl, price) {
-  const productData = {
-    name,
-    description,
-    photoUrl,
-    price,
-  };
-
-  localStorage.setItem("selectedProduct", JSON.stringify(productData));
-  window.location.href = "./item.html";
-}
-
 function switchPage(delta) {
-  console.log(delta)
-  const currentPage = parseInt(pageNumEl.textContent);
+  console.log(delta);
+  const currentPage = parseInt(pageNumEl.textContent.trim(), 10);
   if (isNaN(currentPage)) return;
 
   const newPage = currentPage + delta;
@@ -145,32 +121,34 @@ function switchPage(delta) {
   fetchAndRenderPage(newPage - 1);
 }
 
-// This block should only run if .post exists (on item.html)
-document.addEventListener("DOMContentLoaded", () => {
-  const postDiv = document.querySelector(".post");
-  const productData = JSON.parse(localStorage.getItem("selectedProduct"));
-
-  if (!postDiv || !productData) return;
-
-  const nameEl = document.createElement("h2");
-  nameEl.textContent = productData.name;
-
-  const descEl = document.createElement("p");
-  descEl.textContent = productData.description;
-
-  const priceEl = document.createElement("p");
-  priceEl.textContent = `Price: ${productData.price}`;
-
-  postDiv.appendChild(nameEl);
-
-  if (productData.photoUrl && typeof productData.photoUrl === "string") {
-    const img = document.createElement("img");
-    img.src = productData.photoUrl;
-    img.alt = productData.name || "Product image";
-    img.width = 100;
-    postDiv.appendChild(img);
-  }
-
-  postDiv.appendChild(descEl);
-  postDiv.appendChild(priceEl);
+selectSort.addEventListener("change", function () {
+  selectedItem = selectSort.value;
+  fetchAndRenderPage(0);
 });
+
+// --1
+
+function detailedPostPage(name, description, photoUrl, price, date, username) {
+  const productData = {
+    name,
+    description,
+    photoUrl,
+    price,
+    date,
+    username,
+  };
+
+  localStorage.setItem("selectedProduct", JSON.stringify(productData));
+  window.location.href = "./item.html";
+}
+
+function switchToPage(url) {
+  window.location.href = url;
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+
+  window.location.href = "./login.html";
+}
