@@ -15,4 +15,6 @@ public interface PostRepository extends JpaRepository<Post, String> {
     Page<Post> findAllByOrderByPriceAsc(Pageable pageable);
     Page<Post> findAllByOrderByPriceDesc(Pageable pageable);
 
+
+
 }

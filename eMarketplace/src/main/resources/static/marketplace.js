@@ -35,6 +35,8 @@ const size = 6;
 const postdiv = document.querySelector(".posts");
 const pageNumEl = document.querySelector(".pageButtons p");
 
+const pageElement = document.querySelector(".Pages");
+
 let selectedItem = "dateDesc";
 const selectSort = document.getElementById("sort");
 
@@ -55,6 +57,10 @@ function fetchAndRenderPage(pageIndex) {
 
       const data = result.content ?? result;
       totalPages = result.totalPages ?? 1;
+
+      const totalElements = result.totalElements ?? 0;
+
+      pageElement.textContent = totalElements.toString() + " items in total";
 
       console.log("Parsed products to render:", data);
 

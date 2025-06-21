@@ -29,10 +29,17 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
-                        .anyRequest().permitAll()
-                )
+                        .requestMatchers(HttpMethod.GET, "/product", "/product/*")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/", "/*.html", "/*.css", "/*.js")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/", "/*.html", "/*.css", "/*.js")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/register", "/user/login")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .build();
     }
-
 
 }

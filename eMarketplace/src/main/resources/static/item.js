@@ -84,13 +84,26 @@ if (token && userString) {
       },
       body: JSON.stringify(jsonData),
     })
-      .then((res) => {
+      .then(async (res) => {
+        const contentType = res.headers.get("content-type");
+        const hasJson = contentType && contentType.includes("application/json");
+
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+          const errorData = hasJson ? await res.json() : { message: res.statusText };
+
+          if (res.status === 403 || res.status === 401) {
+            console.warn("Authentication failed:", errorData.message);
+            alert("Session expired. Please log in again.");
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            window.location.href = "./login.html";
+            return Promise.reject("Unauthorized");
+          }
+
+          throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
         }
 
-        const contentType = res.headers.get("content-type");
-        if (res.status === 204 || !contentType || !contentType.includes("application/json")) {
+        if (res.status === 204 || !hasJson) {
           return null;
         }
 
@@ -101,8 +114,9 @@ if (token && userString) {
         window.location.href = "./index.html";
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("Error:", error.message);
       });
   }
+
 
 }
