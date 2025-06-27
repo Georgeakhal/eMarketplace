@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String TOKEN_HEADER = "token";
+    static final String TOKEN_HEADER = "token";
     private final TokenUtils tokenUtils;
     private final SecurityContextRepository securityContextRepository;
 

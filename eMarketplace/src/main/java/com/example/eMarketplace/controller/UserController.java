@@ -2,26 +2,14 @@ package com.example.eMarketplace.controller;
 
 import com.example.eMarketplace.dto.LoginDto;
 import com.example.eMarketplace.dto.UserDto;
-import com.example.eMarketplace.model.Post;
-import com.example.eMarketplace.model.User;
 import com.example.eMarketplace.service.AuthService;
 import com.example.eMarketplace.service.UserService;
 import com.example.eMarketplace.util.CredentialsValidator;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @AllArgsConstructor
 @RestController
