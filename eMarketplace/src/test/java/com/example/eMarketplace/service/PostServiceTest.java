@@ -135,6 +135,18 @@ public class PostServiceTest {
     }
 
     @Test
+    void testUpdateThrowsWhenPostNotFound() {
+        String id = "non-existent-id";
+        Post post = new Post();
+
+        when(postRepository.existsById(id)).thenReturn(false);
+
+        var ex = assertThrows(IllegalArgumentException.class, () -> postService.update(id, post));
+        assertEquals("No Shop found with id: " + id, ex.getMessage());
+    }
+
+
+    @Test
     void testUpdatePostNotExists() {
         var id = "missing-id";
         var post = new Post();
